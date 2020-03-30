@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace FlooringCostEstimate
 {
     /****************************************************************
@@ -14,6 +15,7 @@ namespace FlooringCostEstimate
      Date Created:  2/9/2020
     *****************************************************************/
 
+   
     class Program
     {
         static void Main(string[] args)
@@ -63,6 +65,7 @@ namespace FlooringCostEstimate
             double totalCost;
 
             bool validResponse;
+ 
 
             /*
                    **********************
@@ -80,6 +83,8 @@ namespace FlooringCostEstimate
             //
             // display an opening screen
             //
+            
+
             Console.WriteLine();
             Console.WriteLine("\n\t\t\tThe Flooring Cost Calculator");
             Console.WriteLine();
@@ -148,16 +153,16 @@ namespace FlooringCostEstimate
                 //
 
                 Console.WriteLine();
-                Console.WriteLine("\t\tFlooring Detials");
+                Console.WriteLine("\t\t\t\tFlooring Detials");
                 Console.WriteLine();
 
                 Console.WriteLine();
-                Console.WriteLine("Great, let's get started!");
+                Console.WriteLine("\tGreat, let's get started!");
                 Console.WriteLine();
-                Console.WriteLine("We just need some measurements and floor type to calculate your costs.");
+                Console.WriteLine("\tWe just need some measurements and floor type to calculate your costs.");
 
                 Console.WriteLine();
-                Console.Write("Press any key to begin.");
+                Console.Write("\n\n\n\n\n\t\t\t\tPress any key to begin.");
                 Console.ReadLine();
 
                 //
@@ -184,29 +189,29 @@ namespace FlooringCostEstimate
                     //
 
                     Console.WriteLine();
-                    Console.WriteLine("Length and Width of rooms");
+                    Console.WriteLine("\t\t\tLength and Width of rooms");
                     Console.WriteLine();
 
                     Console.WriteLine();
-                    Console.WriteLine("\tEnter Length of 1st room.");
+                    Console.WriteLine("\n\nEnter Length of 1st room.");
                     Console.Write("Width: ");
                     userResponse = Console.ReadLine();
                     roomOneWidth = double.Parse(userResponse);
 
                     Console.WriteLine();
-                    Console.WriteLine("\tEnter Width of 1st room.");
+                    Console.WriteLine("Enter Width of 1st room.");
                     Console.Write("Length: ");
                     userResponse = Console.ReadLine();
                     roomOneLength = double.Parse(userResponse);
 
                     Console.WriteLine();
-                    Console.WriteLine("\tEnter Length of 2nd room.");
+                    Console.WriteLine("Enter Length of 2nd room.");
                     Console.Write("Width: ");
                     userResponse = Console.ReadLine();
                     roomTwoWidth = double.Parse(userResponse);
 
                     Console.WriteLine();
-                    Console.WriteLine("\tEnter Width of 2nd room.");
+                    Console.WriteLine("Enter Width of 2nd room.");
                     Console.Write("Length: ");
                     userResponse = Console.ReadLine();
                     roomTwoLength = double.Parse(userResponse);
@@ -221,13 +226,13 @@ namespace FlooringCostEstimate
                         validResponse = false;
 
                         Console.WriteLine();
-                        Console.WriteLine("It looks like you've entered invalid numbers.  Please enter positive numbers.");
+                        Console.WriteLine("\tIt looks like you've entered invalid numbers.  Please enter positive numbers.");
 
                         //
                         // pause the app for the user
                         //
                         Console.WriteLine();
-                        Console.WriteLine("\tPress any key to continue.");
+                        Console.WriteLine("\n\n\n\tPress any key to continue.");
                         Console.ReadKey();
                     }
 
@@ -257,7 +262,7 @@ namespace FlooringCostEstimate
                     //
 
                     Console.WriteLine();
-                    Console.WriteLine("\t\tFlooring Type");
+                    Console.WriteLine("\t\t\t\tFlooring Type");
                     Console.WriteLine();
 
                     Console.WriteLine();
@@ -379,6 +384,21 @@ namespace FlooringCostEstimate
                 Console.ReadKey();
             }
 
+            else if(userResponse == "no")
+            {
+                Console.BackgroundColor = openingClosingScreenBG;
+                Console.ForegroundColor = openingClosingScreenFG;
+
+                Console.CursorVisible = false;
+                Console.Clear();
+
+                Console.WriteLine($"\n\n\n\tWell {userName}, this app is for those who are purchasing new flooring.");
+                Console.WriteLine($"\n\n\n\tThank you for using our Flooring Cost application.  Have a nice day!");
+                Console.WriteLine();
+                Console.WriteLine("\n\n\n\t\t\tPress any key to exit.");
+                Console.ReadKey();
+            }
+
             else
             {
                 Console.BackgroundColor = openingClosingScreenBG;
@@ -387,7 +407,8 @@ namespace FlooringCostEstimate
                 Console.CursorVisible = false;
                 Console.Clear();
 
-                Console.WriteLine($"\n\n\n\tThank you for using the Flooring Cost application.  Have a nice day!");
+                
+                Console.WriteLine($"\n\n\n\tThank you for using our Flooring Cost application.  Have a nice day!");
                 Console.WriteLine();
                 Console.WriteLine("\n\n\n\t\t\tPress any key to exit.");
                 Console.ReadKey();
