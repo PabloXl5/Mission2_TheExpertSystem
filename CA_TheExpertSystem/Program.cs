@@ -59,13 +59,20 @@ namespace FlooringCostEstimate
             double SquareFootagRoomTwo;
             double RoomTwoCost = 0;
 
+            const double INTEREST_RATE = 0.035;
+
+            double monthlyInterestRate;
+            int loanTermYears;
+            int loanTermMonths = 0; // for precompiler check
+            double monthlyPayment = 0; // for precompiler check
+
             //double roomDimensionsAll;
             //double validDimensions;
 
             double totalCost;
 
             bool validResponse;
- 
+            #region
 
             /*
                    **********************
@@ -193,26 +200,26 @@ namespace FlooringCostEstimate
                     Console.WriteLine();
 
                     Console.WriteLine();
-                    Console.WriteLine("\n\nEnter Length of 1st room.");
-                    Console.Write("Width: ");
+                    Console.WriteLine("Enter Length of 1st room.");
+                    Console.Write("\nWidth: ");
                     userResponse = Console.ReadLine();
                     roomOneWidth = double.Parse(userResponse);
 
                     Console.WriteLine();
                     Console.WriteLine("Enter Width of 1st room.");
-                    Console.Write("Length: ");
+                    Console.Write("\nLength: ");
                     userResponse = Console.ReadLine();
                     roomOneLength = double.Parse(userResponse);
 
                     Console.WriteLine();
                     Console.WriteLine("Enter Length of 2nd room.");
-                    Console.Write("Width: ");
+                    Console.Write("\nWidth: ");
                     userResponse = Console.ReadLine();
                     roomTwoWidth = double.Parse(userResponse);
 
                     Console.WriteLine();
                     Console.WriteLine("Enter Width of 2nd room.");
-                    Console.Write("Length: ");
+                    Console.Write("\nLength: ");
                     userResponse = Console.ReadLine();
                     roomTwoLength = double.Parse(userResponse);
 
@@ -367,10 +374,171 @@ namespace FlooringCostEstimate
                 totalCost = RoomOneCost + RoomTwoCost;
 
                 Console.WriteLine($"Total costs of rooms: ${totalCost}");
+                #endregion   
 
                 Console.WriteLine();
-                Console.WriteLine("\tPress any key to Finish.");
-                Console.ReadKey();
+                Console.WriteLine("\tWould you like to setup monthly payments?");
+                userResponse = Console.ReadLine().ToLower();
+
+                if (userResponse == "yes")
+                {
+ 
+                    do
+                    {
+                        validResponse = true;
+
+                        //
+                        //      *******************************
+                        //      *      Length of Loan         *
+                        //      *******************************
+                        //
+                        // set cursor visible and clear screen
+                        //
+                        Console.CursorVisible = true;
+                        Console.Clear();
+
+                        //
+                        // display header
+                        //
+                        Console.WriteLine();
+                        Console.WriteLine("\t\tLength of Loan");
+                        Console.WriteLine();
+
+                        Console.WriteLine();
+                        Console.Write(" Please tell me the length of the loan in years.");
+                        Console.Write(" Enter loan length:");
+                        userResponse = Console.ReadLine();
+
+                        if (!int.TryParse(userResponse, out loanTermYears))
+                        {
+                            validResponse = false;
+
+                            Console.WriteLine();
+                            Console.WriteLine("It appears you entered an invalid number for the years. Please enter a positive number.");
+
+                            //
+                            // pause the app for the user
+                            //
+                            Console.WriteLine();
+                            Console.WriteLine("\tPress any key to continue.");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            loanTermMonths = loanTermYears * 12;
+                        }
+
+                    } while (!validResponse);
+
+                    monthlyInterestRate = INTEREST_RATE / 12;
+
+                    if (monthlyInterestRate != 0.0)
+                    {
+                        //
+                        // calculate the monthly payments
+                        //
+                        double factor = (monthlyInterestRate * (Math.Pow(monthlyInterestRate + 1, loanTermMonths))) / (Math.Pow(monthlyInterestRate + 1, loanTermMonths) - 1);
+                        monthlyPayment = totalCost * factor;
+                    }
+
+                    //
+                    //      *******************************
+                    //      *      Monthly Payments       *
+                    //      *******************************
+                    //
+                    // set cursor visible and clear screen
+                    //
+                    Console.CursorVisible = true;
+                    Console.Clear();
+
+                    //
+                    // display header
+                    //
+                    Console.WriteLine();
+                    Console.WriteLine("\t\tMonthly Payments");
+                    Console.WriteLine();
+
+                    Console.WriteLine($"Loan for {userName}.");
+                    Console.WriteLine();
+                    //
+                    // code to take a single word to proper case
+                    //
+                    //string typeOfLoanProperCase = typeOfLoan.Substring(0, 1).ToUpper() + typeOfLoan.Substring(1).ToLower();
+                    //Console.WriteLine($"Type: {typeOfLoanProperCase}");
+                    Console.WriteLine($"Rate: {monthlyInterestRate * 12:p}");
+                    Console.WriteLine($"Principle: {totalCost:c}"); // currency format
+                    Console.WriteLine($"Years: {loanTermYears}");
+                    Console.WriteLine($"Monthly Payments: {monthlyPayment:c}"); // currency format
+
+                    //
+                    // pause the app for the user
+                    //
+                    Console.WriteLine();
+                    Console.WriteLine("\tPress any key to continue.");
+                    Console.ReadKey();
+
+                    //
+                    //      *******************************
+                    //      *    Amortization Table       *
+                    //      *******************************
+                    //
+                    // set cursor visible and clear screen
+                    //
+                    Console.CursorVisible = true;
+                    Console.Clear();
+
+                    //
+                    // display header
+                    //
+                    Console.WriteLine();
+                    Console.WriteLine("\t\tAmortization Table");
+                    Console.WriteLine();
+
+                    //
+                    // display table headers
+                    //
+                    Console.WriteLine(
+                        "Month".PadLeft(5) +
+                        "Current Balance".PadLeft(20) +
+                        "Payment".PadLeft(10) +
+                        "Interest".PadLeft(10) +
+                        "Principle".PadLeft(10) +
+                        "New Balance".PadLeft(20)
+                        );
+
+                    //
+                    // display table values
+                    //
+                    double currentBalance = totalCost;
+                    double newBalancee;
+                    double monthlyPrinciple;
+                    double monthlyInterest;
+
+                    for (int month = 1; month <= loanTermMonths; month++)
+                    {
+                        monthlyInterest = currentBalance * monthlyInterestRate;
+                        monthlyPrinciple = monthlyPayment - monthlyInterest;
+                        newBalancee = currentBalance - monthlyPrinciple;
+                        Console.WriteLine(
+                            month.ToString().PadLeft(5) +
+                            currentBalance.ToString("C2").PadLeft(20) +
+                            monthlyPayment.ToString("C2").PadLeft(10) +
+                            monthlyInterest.ToString("C2").PadLeft(10) +
+                            monthlyPrinciple.ToString("C2").PadLeft(10) +
+                            newBalancee.ToString("C2").PadLeft(20)
+                            );
+                        currentBalance = newBalancee;
+                    }
+
+                    //
+                    // pause the app for the user
+                    //
+                    Console.WriteLine();
+                    Console.WriteLine("\tPress any key to continue.");
+                    Console.ReadKey();
+
+                }
+
 
                 Console.BackgroundColor = openingClosingScreenBG;
                 Console.ForegroundColor = openingClosingScreenFG;
@@ -393,9 +561,10 @@ namespace FlooringCostEstimate
                 Console.Clear();
 
                 Console.WriteLine($"\n\n\n\tWell {userName}, this app is for those who are purchasing new flooring.");
-                Console.WriteLine($"\n\n\n\tThank you for using our Flooring Cost application.  Have a nice day!");
+                Console.WriteLine($"\n\tThank you for your interest in our Flooring Cost application.");
+                Console.WriteLine($"\n\t\t\t\tHave a nice day!");
                 Console.WriteLine();
-                Console.WriteLine("\n\n\n\t\t\tPress any key to exit.");
+                Console.WriteLine("\n\n\n\n\n\n\t\t\tPress any key to exit.");
                 Console.ReadKey();
             }
 
@@ -408,7 +577,7 @@ namespace FlooringCostEstimate
                 Console.Clear();
 
                 
-                Console.WriteLine($"\n\n\n\tThank you for using our Flooring Cost application.  Have a nice day!");
+                Console.WriteLine($"\n\n\n\tThank you for using our Flooring Cost application. Have a nice day!");
                 Console.WriteLine();
                 Console.WriteLine("\n\n\n\t\t\tPress any key to exit.");
                 Console.ReadKey();
